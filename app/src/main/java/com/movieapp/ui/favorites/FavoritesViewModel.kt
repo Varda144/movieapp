@@ -6,6 +6,7 @@ import com.movieapp.data.repo.MovieRepository
 import com.movieapp.domain.model.Movie
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -17,6 +18,7 @@ data class FavoritesUiState(
 class FavoritesViewModel(private val repository: MovieRepository) : ViewModel() {
 
     val uiState: StateFlow<FavoritesUiState> = repository.getFavorites()
+        .map { favorites -> FavoritesUiState(isLoading = false, favorites = favorites) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
