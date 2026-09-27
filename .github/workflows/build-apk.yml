@@ -9,6 +9,8 @@ on:
 
 env:
   JAVA_VERSION: "17"
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
 jobs:
   build:
@@ -27,15 +29,16 @@ jobs:
           cache: gradle
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
-          log-accepted-android-sdk-licenses: true
-
-      - name: Install Android SDK components
         run: |
-          sdkmanager --install "platforms;android-34"
-          sdkmanager --install "build-tools;34.0.0"
+          mkdir -p ${ANDROID_HOME}/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+          unzip -q cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
+          mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+          rm cmdline-tools.zip
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34"
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "build-tools;34.0.0"
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platform-tools"
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
@@ -104,14 +107,16 @@ jobs:
           cache: gradle
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
-
-      - name: Install Android SDK components
         run: |
-          sdkmanager --install "platforms;android-34"
-          sdkmanager --install "build-tools;34.0.0"
+          mkdir -p ${ANDROID_HOME}/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+          unzip -q cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
+          mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+          rm cmdline-tools.zip
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34"
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "build-tools;34.0.0"
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platform-tools"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -144,14 +149,16 @@ jobs:
           cache: gradle
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
-
-      - name: Install Android SDK components
         run: |
-          sdkmanager --install "platforms;android-34"
-          sdkmanager --install "build-tools;34.0.0"
+          mkdir -p ${ANDROID_HOME}/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+          unzip -q cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
+          mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+          rm cmdline-tools.zip
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34"
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "build-tools;34.0.0"
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platform-tools"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
