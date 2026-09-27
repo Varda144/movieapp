@@ -102,6 +102,8 @@ fun MainScreen() {
             }
         }
     ) { innerPadding ->
-        AppNavigation()
+        Box(modifier = Modifier.padding(innerPadding)) {
+            AppNavigation()
+        }
     }
 }
